@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RealityQuest – Real-Life Challenge Tracker</title>
+  <link rel="stylesheet" href="dog.css" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="intro-lock">
+  <!-- Intro overlay -->
+  <div id="intro-overlay" class="intro-overlay">
+    <div class="intro-smoke"></div>
+    <div class="intro-content">
+      <p class="intro-subtitle">Loading your next quest...</p>
+      <p class="intro-text">Welcome to RealityQuest</p>
+    </div>
+  </div>
+
+  <header class="header">
+    <h1>RealityQuest</h1>
+    <p>Gamified real-life challenge tracker</p>
+  </header>
+
+  <!-- Landing hero section -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <div class="hero-clock-wrapper">
+        <div class="hero-clock">
+          <div class="clock-center"></div>
+          <div class="clock-hand hour"></div>
+          <div class="clock-hand minute"></div>
+        </div>
+      </div>
+      <div class="hero-text">
+        <h2>Turn your time into XP.</h2>
+        <p>Track real-life challenges, build habits, and climb the leaderboard one day at a time.</p>
+        <button id="hero-get-started">Get started</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main app section (scroll down) -->
+  <main class="container" id="app-section">
+    <!-- Auth choice Section -->
+    <section class="card auth-card" id="auth-choice">
+      <h2>Get started</h2>
+      <p>Choose how you want to continue:</p>
+      <div class="auth-choice-buttons">
+        <button type="button" id="auth-signin-btn" class="auth-main-btn">Sign In</button>
+        <button type="button" id="auth-signup-btn" class="auth-main-btn">Sign Up</button>
+      </div>
+    </section>
+
+    <!-- Auth Section (Sign In) -->
+    <section class="card" id="auth-section">
+      <h2>Sign In</h2>
+      <form id="login-form">
+        <input type="email" id="login-email" placeholder="Email" required />
+        <input type="password" id="login-password" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+
+      <div class="oauth-buttons">
+        <h3>Or login with</h3>
+        <button type="button" id="google-oauth-btn">Google (coming soon)</button>
+        <button type="button" id="github-oauth-btn">GitHub (coming soon)</button>
+      </div>
+
+      <div class="auth-status">
+        <span id="auth-user-info">Not logged in</span>
+        <button type="button" id="logout-btn" class="hidden">Logout</button>
+      </div>
+    </section>
+
+    <!-- Challenges Section -->
+    <section class="card" id="challenges-section">
+      <!-- Animated HUD background -->
+      <div class="hud-bg">
+        <div class="hud-ring hud-ring-outer"></div>
+        <div class="hud-ring hud-ring-middle"></div>
+        <div class="hud-ring hud-ring-inner"></div>
+        <div class="hud-dots"></div>
+      </div>
+
+      <div class="section-header challenges-top">
+        <h2>Challenges</h2>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <a href="/leaderboard.html" class="secondary-link-btn">Leaderboard</a>
+          <button type="button" id="dashboard-logout-btn">Logout</button>
+        </div>
+      </div>
+
+      <div class="section-header">
+        <h3>Create Challenge</h3>
+      </div>
+      <form id="challenge-form" class="inline-form">
+        <input type="text" id="challenge-title" placeholder="Title" required />
+        <input type="text" id="challenge-description" placeholder="Description" />
+        <select id="challenge-category" required>
+          <option value="">Category</option>
+          <option value="Health">Health</option>
+          <option value="Learning">Learning</option>
+          <option value="Discipline">Discipline</option>
+          <option value="Productivity">Productivity</option>
+          <option value="Other">Other</option>
+        </select>
+        <select id="challenge-difficulty" required>
+          <option value="Easy">Easy</option>
+          <option value="Medium">Medium</option>
+          <option value="Hard">Hard</option>
+        </select>
+        <input type="number" id="challenge-xp" placeholder="XP" min="1" value="10" />
+        <button type="submit">Create</button>
+      </form>
+
+      <div class="section-header">
+        <h3>Browse Challenges</h3>
+        <div>
+          <label for="filter-category">Filter by category:</label>
+          <select id="filter-category">
+            <option value="">All</option>
+            <option value="Health">Health</option>
+            <option value="Learning">Learning</option>
+            <option value="Discipline">Discipline</option>
+            <option value="Productivity">Productivity</option>
+            <option value="Other">Other</option>
+          </select>
+        </div>
+      </div>
+
+      <div id="challenges-list" class="list"></div>
+    </section>
+
+    <!-- Leaderboard teaser / link only -->
+    <!-- Full leaderboard is on /leaderboard.html -->
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <!-- Husky dog animation in bottom-right corner -->
+  <div id="welcome-dog" class="welcome-dog">
+    <div class="husky">
+      <div class="mane">
+        <div class="coat"></div>
+      </div>
+      <div class="body">
+        <div class="head">
+          <div class="ear"></div>
+          <div class="ear"></div>
+          <div class="face">
+            <div class="eye"></div>
+            <div class="eye"></div>
+            <div class="nose"></div>
+            <div class="mouth">
+              <div class="lips"></div>
+              <div class="tongue"></div>
+            </div>
+          </div>
+        </div>
+        <div class="torso"></div>
+      </div>
+      <div class="legs">
+        <div class="front-legs">
+          <div class="leg"></div>
+          <div class="leg"></div>
+        </div>
+        <div class="hind-leg"></div>
+      </div>
+      <div class="tail">
+        <div class="tail">
+          <div class="tail">
+            <div class="tail">
+              <div class="tail">
+                <div class="tail">
+                  <div class="tail"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SVG filters for husky squiggly animation -->
+  <svg xmlns="http://www.w3.org/2000/svg" version="1.1" style="position:absolute; width:0; height:0; overflow:hidden;">
+    <defs>
+      <filter id="squiggly-0">
+        <feTurbulence baseFrequency="0.02" numOctaves="3" result="noise" seed="0" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
+      </filter>
+      <filter id="squiggly-1">
+        <feTurbulence baseFrequency="0.02" numOctaves="3" result="noise" seed="1" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
+      </filter>
+      <filter id="squiggly-2">
+        <feTurbulence baseFrequency="0.02" numOctaves="3" result="noise" seed="2" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="2" />
+      </filter>
+      <filter id="squiggly-3">
+        <feTurbulence baseFrequency="0.02" numOctaves="3" result="noise" seed="3" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" />
+      </filter>
+      <filter id="squiggly-4">
+        <feTurbulence baseFrequency="0.02" numOctaves="3" result="noise" seed="4" />
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="1" />
+      </filter>
+    </defs>
+  </svg>
+
+  <script src="app.js"></script>
+</body>
+</html>

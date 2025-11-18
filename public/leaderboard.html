@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>RealityQuest – Leaderboard</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="header">
+    <h1>RealityQuest</h1>
+    <p>Top performers</p>
+  </header>
+
+  <main class="container" id="app-section">
+    <section class="card" id="leaderboard-section">
+      <div class="section-header">
+        <h2>Leaderboard</h2>
+        <div style="display:flex; gap:0.5rem; align-items:center;">
+          <a href="/" class="back-link" style="text-decoration:none; font-size:0.9rem;">← Challenges</a>
+          <button type="button" id="dashboard-logout-btn">Logout</button>
+        </div>
+      </div>
+      <div class="section-header">
+        <h3>Top Users</h3>
+        <div>
+          <label for="leaderboard-by">Sort by:</label>
+          <select id="leaderboard-by">
+            <option value="xp">XP</option>
+            <option value="streak">Current Streak</option>
+          </select>
+        </div>
+      </div>
+
+      <table class="leaderboard-table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>XP</th>
+            <th>Current Streak</th>
+            <th>Longest Streak</th>
+          </tr>
+        </thead>
+        <tbody id="leaderboard-body"></tbody>
+      </table>
+    </section>
+  </main>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

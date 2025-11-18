@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RealityQuest – Sign In</title>
+  <style>
+:root {
+      --border-color: #AAC4F5;
+      --shadow-color: rgba(170, 196, 245, 0.6);
+      --main-bg-color: #FFF8DE;
+      --secondary-bg-color: #FFF2C6;
+      --lamp-light-color: #AAC4F5;
+      --lamp-dark-color: #8CA9FF;
+      --rope-color: #8CA9FF;
+      --icon-color: #8CA9FF;
+      --lamp-width: 140px;
+      --lamp-height: 100px;
+      --lamp-top-height: 20px;
+    }
+
+body {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--main-bg-color);
+      overflow: hidden;
+      width: 100vw;
+      height: 100vh;
+      font-family: Arial, sans-serif;
+      transition: opacity 0.4s ease, transform 0.4s ease;
+    }
+
+    body.page-exit {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+
+    /* Slider form - positioned above lamp */
+    .slider-form {
+      margin: 0 0 2em 0;
+      width: 200px;
+      padding: 1.5em 2.2em;
+      border-radius: 4px;
+      background: var(--secondary-bg-color);
+      box-shadow: 0 5px 15px var(--shadow-color);
+      z-index: 10;
+    }
+
+    .lamp-wrapper {
+      position: relative;
+      width: 100%;
+      justify-content: center;
+      display: flex;
+      margin-bottom: 2em;
+    }
+
+    .lamp {
+      height: var(--lamp-height);
+      width: var(--lamp-width);
+      position: relative;
+      z-index: 2;
+    }
+
+    .lamp-part {
+      background-color: var(--lamp-dark-color);
+      transform: skewX(-5deg);
+      height: var(--lamp-height);
+      width: 60%;
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+
+    .lamp-part.-body.right {
+      transform: skewX(5deg);
+      left: auto;
+      right: 0;
+    }
+
+    .lamp-part.-top {
+      background: transparent;
+      position: absolute;
+      width: calc(var(--lamp-width) - 10px);
+      height: var(--lamp-top-height);
+      left: 6px;
+      top: -17px;
+    }
+
+    .lamp-part.-top-part {
+      width: 50%;
+      height: var(--lamp-top-height);
+      left: 0;
+      top: 0;
+      transform: skewX(-5deg);
+      border-radius: 80% 0 0 0;
+      border-top: 2px solid var(--border-color);
+      border-bottom: none;
+    }
+
+    .lamp-part.-top-part.right {
+      transform: skewX(5deg);
+      left: auto;
+      right: 1px;
+      border-radius: 0 80% 0 0;
+    }
+
+    .lamp-part.-bottom {
+      background: linear-gradient(#FFFFFA, #FDFFB2);
+      height: calc(var(--lamp-top-height) + 10px);
+      width: calc(var(--lamp-width) + 10px);
+      position: absolute;
+      top: auto;
+      bottom: -18px;
+      left: -5px;
+      border-radius: 50%;
+      border-top: 3px solid var(--border-color);
+      border-bottom: 2px solid var(--border-color);
+    }
+
+    .lamp-part.-bottom:before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      background: linear-gradient(var(--border-color), var(--lamp-light-color));
+      border-radius: 50%;
+      width: 100%;
+      height: 100%;
+      opacity: 1;
+    }
+
+    .blub {
+      position: absolute;
+      width: calc(var(--lamp-width) - 20px);
+      height: calc(var(--lamp-height) - 20px);
+      top: calc(var(--lamp-top-height) - 10px);
+      left: calc(var(--lamp-top-height) - 10px);
+      border-radius: 5% 3% 38% 40%;
+      background-color: #FFFFFA;
+      -webkit-filter: blur(15px);
+      filter: blur(15px);
+      z-index: 2;
+      opacity: 0;
+      transition: all 300ms;
+    }
+
+    .lamp-rope {
+      position: absolute;
+      width: 8px;
+      height: 200px;
+      background: linear-gradient(var(--border-color) 9%, var(--rope-color));
+      bottom: 100%;
+      margin: auto;
+    }
+
+    .wall-light-shadow {
+      background: linear-gradient(var(--lamp-light-color), var(--main-bg-color) 30%);
+      width: 80%;
+      height: 200vh;
+      position: absolute;
+      top: 150%;
+      left: auto;
+      border-radius: 50% 50% 0 0;
+      -webkit-filter: blur(5px);
+      filter: blur(5px);
+      z-index: -1;
+      opacity: 0;
+      transition: all 300ms;
+    }
+
+  /* Login form - positioned below lamp */
+    .login-form {
+      margin-top: 50px;
+      width: 260px;
+      padding: 2em 2.2em;
+      border-radius: 12px;
+      background: #FFF2C6;
+      box-shadow: 0 8px 18px var(--shadow-color);
+      opacity: 0;
+      transition: all 300ms ease;
+      transform: translateY(20px);
+    }
+
+.login-form h2 {
+      text-align: center;
+      color: #1f2937;
+      margin-bottom: 1.5em;
+      font-size: 1.5em;
+    }
+
+    .form-group {
+      margin-bottom: 1.2em;
+    }
+
+.form-group label {
+      display: block;
+      margin-bottom: 0.5em;
+      color: #374151;
+      font-weight: bold;
+      font-size: 0.9em;
+    }
+
+.form-group input {
+      width: 100%;
+      padding: 0.6em 0.9em;
+      border: 1px solid #AAC4F5;
+      border-radius: 999px;
+      font-size: 0.95em;
+      transition: border-color 300ms ease, box-shadow 300ms ease;
+      box-sizing: border-box;
+      background:#FFF8DE;
+    }
+
+    .form-group input:focus {
+      outline: none;
+      border-color: #8CA9FF;
+      box-shadow: 0 0 0 2px rgba(170, 196, 245, 0.4);
+    }
+
+.login-btn {
+      width: 100%;
+      padding: 0.7em 1em;
+      background: #8CA9FF;
+      color: #111827;
+      border: none;
+      border-radius: 999px;
+      font-size: 0.95em;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 300ms ease;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+.login-btn:hover {
+      color:#111827;
+      background: #AAC4F5;
+      transform: translateY(-1px);
+    }
+
+    .form-footer {
+      margin-top: 1em;
+      text-align: center;
+      color: #374151;
+      font-size: 0.9em;
+    }
+
+.back-link {
+      color: #8CA9FF;
+      text-decoration: none;
+    }
+
+    .back-link:hover {
+      text-decoration: underline;
+    }
+
+    .icon {
+      width: 8px;
+      height: 8px;
+      display: inline-block;
+    }
+
+    .sun {
+      background: var(--icon-color);
+      border-radius: 50%;
+      position: relative;
+      float: left;
+      transform: scale(0.8);
+    }
+
+    .ray {
+      background: var(--icon-color);
+      width: 2px;
+      height: 4px;
+      position: absolute;
+      left: 3px;
+      bottom: 12px;
+      transform-origin: 50% calc(100% + 8px);
+      border-radius: 50%;
+    }
+
+    .ray:nth-child(1) { transform: rotate(45deg); }
+    .ray:nth-child(2) { transform: rotate(90deg); }
+    .ray:nth-child(3) { transform: rotate(135deg); }
+    .ray:nth-child(4) { transform: rotate(180deg); }
+    .ray:nth-child(5) { transform: rotate(225deg); }
+    .ray:nth-child(6) { transform: rotate(270deg); }
+    .ray:nth-child(7) { transform: rotate(315deg); }
+    .ray:nth-child(8) { transform: rotate(360deg); }
+
+    input[type=range] {
+      -webkit-appearance: none;
+      width: calc(100% - 30px);
+      float: right;
+    }
+
+    input[type=range]:focus {
+      outline: none;
+    }
+
+    input[type=range]::-webkit-slider-runnable-track {
+      width: 100%;
+      height: 2px;
+      cursor: pointer;
+      background: var(--icon-color);
+    }
+
+    input[type=range]::-webkit-slider-thumb {
+      height: 13px;
+      width: 13px;
+      border-radius: 50%;
+      background: var(--icon-color);
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -6px;
+    }
+
+    input[type=range]:hover::-webkit-slider-thumb {
+      box-shadow: 0 0 5px var(--icon-color);
+    }
+
+    input[type=range]::-moz-range-track {
+      width: 100%;
+      height: 2px;
+      cursor: pointer;
+      background: var(--icon-color);
+    }
+
+    input[type=range]::-moz-range-thumb {
+      height: 13px;
+      width: 13px;
+      border-radius: 50%;
+      background: var(--icon-color);
+      cursor: pointer;
+      -webkit-appearance: none;
+      margin-top: -6px;
+    }
+
+    /* Light intensity states controlling lamp + form visibility */
+    body[data-light^="1"] .blub, body[data-light^="1"] .wall-light-shadow {
+      opacity: 0.1;
+    }
+    body[data-light^="1"] .lamp-part.-bottom:before {
+      opacity: 0.9;
+    }
+    body[data-light^="1"] .login-form {
+      opacity: 0.1;
+      transform: translateY(15px);
+    }
+
+    body[data-light^="2"] .blub, body[data-light^="2"] .wall-light-shadow {
+      opacity: 0.2;
+    }
+    body[data-light^="2"] .lamp-part.-bottom:before {
+      opacity: 0.8;
+    }
+    body[data-light^="2"] .login-form {
+      opacity: 0.2;
+      transform: translateY(10px);
+    }
+
+    body[data-light^="3"] .blub, body[data-light^="3"] .wall-light-shadow {
+      opacity: 0.3;
+    }
+    body[data-light^="3"] .lamp-part.-bottom:before {
+      opacity: 0.7;
+    }
+    body[data-light^="3"] .login-form {
+      opacity: 0.3;
+      transform: translateY(8px);
+    }
+
+    body[data-light^="4"] .blub, body[data-light^="4"] .wall-light-shadow {
+      opacity: 0.4;
+    }
+    body[data-light^="4"] .lamp-part.-bottom:before {
+      opacity: 0.6;
+    }
+    body[data-light^="4"] .login-form {
+      opacity: 0.4;
+      transform: translateY(6px);
+    }
+
+    body[data-light^="5"] .blub, body[data-light^="5"] .wall-light-shadow {
+      opacity: 0.5;
+    }
+    body[data-light^="5"] .lamp-part.-bottom:before {
+      opacity: 0.5;
+    }
+    body[data-light^="5"] .login-form {
+      opacity: 0.5;
+      transform: translateY(4px);
+    }
+
+    body[data-light^="6"] .blub, body[data-light^="6"] .wall-light-shadow {
+      opacity: 0.6;
+    }
+    body[data-light^="6"] .lamp-part.-bottom:before {
+      opacity: 0.4;
+    }
+    body[data-light^="6"] .login-form {
+      opacity: 0.6;
+      transform: translateY(3px);
+    }
+
+    body[data-light^="7"] .blub, body[data-light^="7"] .wall-light-shadow {
+      opacity: 0.7;
+    }
+    body[data-light^="7"] .lamp-part.-bottom:before {
+      opacity: 0.3;
+    }
+    body[data-light^="7"] .login-form {
+      opacity: 0.7;
+      transform: translateY(2px);
+    }
+
+    body[data-light^="8"] .blub, body[data-light^="8"] .wall-light-shadow {
+      opacity: 0.8;
+    }
+    body[data-light^="8"] .lamp-part.-bottom:before {
+      opacity: 0.2;
+    }
+    body[data-light^="8"] .login-form {
+      opacity: 0.8;
+      transform: translateY(1px);
+    }
+
+    body[data-light^="9"] .blub, body[data-light^="9"] .wall-light-shadow {
+      opacity: 0.9;
+    }
+    body[data-light^="9"] .lamp-part.-bottom:before {
+      opacity: 0.1;
+    }
+    body[data-light^="9"] .login-form {
+      opacity: 0.9;
+      transform: translateY(0);
+    }
+
+    body[data-light="10"] .blub, body[data-light="10"] .wall-light-shadow {
+      opacity: 1;
+    }
+    body[data-light="10"] .lamp-part.-bottom:before {
+      opacity: 0;
+    }
+    body[data-light="10"] .login-form {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 1.25rem;
+      right: 1.25rem;
+      background: rgba(15, 23, 42, 0.95);
+      color: #e5e7eb;
+      padding: 0.75rem 1rem;
+      border-radius: 0.5rem;
+      border: 1px solid rgba(148, 163, 184, 0.5);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+      font-size: 0.9rem;
+    }
+
+    .toast.hidden {
+      display: none;
+    }
+
+    .toast.error {
+      border-color: #fca5a5;
+      color: #fecaca;
+    }
+
+    .signin-instructions {
+      position: fixed;
+      top: 1.25rem;
+      left: 1.25rem;
+      max-width: 260px;
+      background: rgba(255, 242, 198, 0.95);
+      border: 1px solid #e5d29b;
+      border-radius: 0.75rem;
+      padding: 0.75rem 0.9rem;
+      font-size: 0.85rem;
+      color: #374151;
+      box-shadow: 0 6px 18px rgba(148, 163, 184, 0.4);
+      z-index: 20;
+    }
+
+    .signin-instructions h3 {
+      margin: 0 0 0.3rem 0;
+      font-size: 0.95rem;
+      color: #111827;
+    }
+
+    .signin-instructions ol {
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+
+    .signin-instructions li + li {
+      margin-top: 0.2rem;
+    }
+  </style>
+</head>
+<body data-light="0">
+  <div class="signin-instructions">
+    <h3>How to sign in</h3>
+    <ol>
+      <li>Use the slider at the top to increase the light until the lamp and form are fully visible.</li>
+      <li>Enter your email and password in the rounded fields.</li>
+      <li>Click <strong>Login</strong> to smoothly continue to your dashboard.</li>
+    </ol>
+  </div>
+  <!-- Slider form above lamp -->
+  <form class="slider-form" id="light-slider-form">
+    <div class="icon sun">
+      <div class="ray"></div>
+      <div class="ray"></div>
+      <div class="ray"></div>
+      <div class="ray"></div>
+      <div class="ray"></div>
+      <div class="ray"></div>
+      <div class="ray"></div>
+      <div class="ray"></div>
+    </div>
+    <input type="range" id="slider" value="0" min="0" max="10">
+  </form>
+
+  <!-- Lamp in the center -->
+  <div class="lamp-wrapper">
+    <div class="lamp-rope"></div>
+    <div class="lamp">
+      <div class="lamp-part -top">
+          <div class="lamp-part -top-part"></div>
+          <div class="lamp-part -top-part right"></div>
+      </div>
+      <div class="lamp-part -body"></div>
+      <div class="lamp-part -body right"></div>
+      <div class="lamp-part -bottom"></div>
+      <div class="blub"></div>
+    </div>
+    <div class="wall-light-shadow"></div>
+  </div>
+
+  <!-- Login form below lamp -->
+  <div class="login-form">
+    <h2>Welcome Back</h2>
+    <form id="signin-form">
+      <div class="form-group">
+        <label for="signin-email">Email:</label>
+        <input type="email" id="signin-email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="signin-password">Password:</label>
+        <input type="password" id="signin-password" name="password" required>
+      </div>
+      <button type="submit" class="login-btn">Login</button>
+      <div class="form-footer">
+        Don't have an account?
+        <a href="/signup.html" class="back-link">Go to Sign Up</a>
+      </div>
+    </form>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script>
+    // slider -> controls body data-light level
+    const slider = document.getElementById('slider');
+    const bodyEl = document.body;
+    slider.addEventListener('input', () => {
+      bodyEl.setAttribute('data-light', slider.value);
+    });
+
+    const toastEl = document.getElementById('toast');
+    function showToast(message, isError = false) {
+      if (!toastEl) return;
+      toastEl.textContent = message;
+      toastEl.classList.toggle('error', isError);
+      toastEl.classList.remove('hidden');
+      setTimeout(() => {
+        toastEl.classList.add('hidden');
+      }, 3000);
+    }
+
+    const API_BASE_URL = '';
+
+    const signinForm = document.getElementById('signin-form');
+    if (signinForm) {
+      signinForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+        const email = document.getElementById('signin-email').value.trim();
+        const password = document.getElementById('signin-password').value;
+
+        try {
+          const res = await fetch(API_BASE_URL + '/api/auth/login', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email, password }),
+          });
+
+          const data = await res.json();
+          if (!res.ok) {
+            throw new Error(data.message || 'Login failed');
+          }
+
+          // Save token & user in same keys used by main app
+          localStorage.setItem('rq_token', data.token);
+          localStorage.setItem('rq_user', JSON.stringify(data.user));
+
+          showToast('Login successful! Loading your dashboard...', false);
+          document.body.classList.add('page-exit');
+          setTimeout(() => {
+            window.location.href = '/';
+          }, 500);
+        } catch (err) {
+          showToast(err.message, true);
+        }
+      });
+    }
+  </script>
+</body>
+</html>
