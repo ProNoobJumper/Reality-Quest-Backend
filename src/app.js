@@ -8,7 +8,7 @@ const challengeRoutes = require('./routes/challengeRoutes');
 const progressRoutes = require('./routes/progressRoutes');
 const leaderboardRoutes = require('./routes/leaderboardRoutes');
 const errorHandler = require('./middleware/errorHandler');
-const logger = require('./middleware/logger');
+// const logger = require('./middleware/logger'); // REMOVED
 
 const app = express();
 
@@ -16,7 +16,7 @@ app.use(cors({ origin: true, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
 app.use(morgan('dev'));
-app.use(logger);
+// app.use(logger); // REMOVED: Redundant because of morgan
 
 // Serve static frontend from /public
 app.use(express.static('public'));

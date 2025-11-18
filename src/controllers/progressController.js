@@ -12,6 +12,17 @@ exports.completeChallenge = async (req, res, next) => {
       return res.status(404).json({ success: false, message: 'Challenge not found' });
     }
 
+    // FIX 1: Prevent infinite XP farming
+    // Check if user has already completed this challenge
+    const existingProgress = await Progress.findOne({
+      user: userId,
+      challenge: challengeId
+    });
+
+    if (existingProgress) {
+      return res.status(400).json({ success: false, message: 'Challenge already completed' });
+    }
+
     // Record completion
     const progress = await Progress.create({
       user: userId,
@@ -24,17 +35,34 @@ exports.completeChallenge = async (req, res, next) => {
 
     user.xp += xpReward;
 
+    // FIX 2: Correct Streak Calculation (Calendar Days)
     const today = new Date();
-    const last = user.lastCompletionDate ? new Date(user.lastCompletionDate) : null;
+    // Normalize today to midnight (00:00:00) to represent the "current day"
+    today.setHours(0, 0, 0, 0);
+
+    let last = null;
+    if (user.lastCompletionDate) {
+      last = new Date(user.lastCompletionDate);
+      // Normalize last date to midnight
+      last.setHours(0, 0, 0, 0);
+    }
 
     if (!last) {
+      // First ever completion
       user.currentStreak = 1;
     } else {
-      const diffDays = Math.floor((today - last) / (1000 * 60 * 60 * 24));
-      if (diffDays === 1) {
+      // Calculate difference in days
+      const diffTime = Math.abs(today - last);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 0) {
+        // Completed another challenge on the same day; streak remains same
+      } else if (diffDays === 1) {
+        // Completed on the next calendar day; increment streak
         user.currentStreak += 1;
-      } else if (diffDays > 1) {
-        user.currentStreak = 1; // reset streak
+      } else {
+        // Missed a day (diff > 1); reset streak
+        user.currentStreak = 1;
       }
     }
 
@@ -42,7 +70,8 @@ exports.completeChallenge = async (req, res, next) => {
       user.longestStreak = user.currentStreak;
     }
 
-    user.lastCompletionDate = today;
+    // Save the actual timestamp for record keeping
+    user.lastCompletionDate = new Date();
     await user.save();
 
     res.status(201).json({
